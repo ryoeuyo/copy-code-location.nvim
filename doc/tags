@@ -1,0 +1,11 @@
+:CopyCodeLocation	copy-code-location.txt	/*:CopyCodeLocation*
+:CopyCodeLocationFile	copy-code-location.txt	/*:CopyCodeLocationFile*
+<Plug>(CopyCodeLocation)	copy-code-location.txt	/*<Plug>(CopyCodeLocation)*
+<Plug>(CopyCodeLocationFile)	copy-code-location.txt	/*<Plug>(CopyCodeLocationFile)*
+copy-code-location	copy-code-location.txt	/*copy-code-location*
+copy-code-location-api	copy-code-location.txt	/*copy-code-location-api*
+copy-code-location-commands	copy-code-location.txt	/*copy-code-location-commands*
+copy-code-location-config	copy-code-location.txt	/*copy-code-location-config*
+copy-code-location-intro	copy-code-location.txt	/*copy-code-location-intro*
+copy-code-location-mappings	copy-code-location.txt	/*copy-code-location-mappings*
+copy-code-location.txt	copy-code-location.txt	/*copy-code-location.txt*

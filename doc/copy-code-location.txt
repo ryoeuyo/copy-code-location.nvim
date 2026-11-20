@@ -1,0 +1,95 @@
+*copy-code-location.txt*  Copy `path:line` references for AI agents
+
+==============================================================================
+CONTENTS                                                *copy-code-location*
+
+  1. Introduction ........................ |copy-code-location-intro|
+  2. Commands ............................ |copy-code-location-commands|
+  3. Mappings ............................ |copy-code-location-mappings|
+  4. Lua API ............................. |copy-code-location-api|
+  5. Configuration ....................... |copy-code-location-config|
+
+==============================================================================
+1. INTRODUCTION                                 *copy-code-location-intro*
+
+Copies the current location as `@path:line` (or `@path` for the whole file),
+ready to be pasted into an AI agent's chat.
+
+Paths are relative to the project root detected via |copy-code-location-config|
+root_markers (`.git` by default), falling back to the current working
+directory.
+
+==============================================================================
+2. COMMANDS                                     *copy-code-location-commands*
+
+                                                        *:CopyCodeLocation*
+:CopyCodeLocation       Copy `@path:line` for the cursor line. With a range
+                        (`:12,30CopyCodeLocation`) copies `@path:12-30`. In
+                        Visual mode the selection is used.
+
+                                                    *:CopyCodeLocationFile*
+:CopyCodeLocationFile   Copy `@path` for the current buffer.
+
+==============================================================================
+3. MAPPINGS                                     *copy-code-location-mappings*
+
+No mappings are created by default.
+
+                                                        *<Plug>(CopyCodeLocation)*
+<Plug>(CopyCodeLocation)
+                        Normal mode: copy `@path:line`.
+                        Visual mode: copy `@path:first-last`.
+
+                                                    *<Plug>(CopyCodeLocationFile)*
+<Plug>(CopyCodeLocationFile)
+                        Copy `@path` for the current buffer.
+
+Example: >
+  vim.keymap.set({ "n", "x" }, "<leader>c", "<Plug>(CopyCodeLocation)")
+  vim.keymap.set("n", "<leader>C", "<Plug>(CopyCodeLocationFile)")
+<
+==============================================================================
+4. LUA API                                         *copy-code-location-api*
+
+require("copy-code-location").yank({opts})
+                        Copy `@path:line`. Fields of {opts}:
+                          bufnr     buffer number, default 0
+                          first     first line (1-based)
+                          last      last line (inclusive), defaults to `first`
+                          file_only omit the line part
+                        Returns the copied string, or nil for unnamed buffers.
+
+require("copy-code-location").yank_file({opts})
+                        Copy `@path`. Optional field: bufnr.
+
+require("copy-code-location").yank_range({opts})
+                        Copy `@path:first-last` for the active or last Visual
+                        selection. Optional field: bufnr.
+
+require("copy-code-location").copy({text})
+                        Copy {text} to the configured register. Returns the
+                        copied string.
+
+require("copy-code-location").setup({opts})
+                        Merge {opts} with the defaults and create the
+                        configured keymaps. Returns the module.
+
+==============================================================================
+5. CONFIGURATION                             *copy-code-location-config*
+
+Defaults: >
+
+  require("copy-code-location").setup({
+    prefix = "@",           -- set to "" to disable
+    register = "+",
+    relative_to = nil,      -- nil|"git"|"cwd"|"<directory>"|function(bufnr)
+    root_markers = { ".git" },
+    notify = true,
+    keymaps = {
+      location = false,     -- e.g. "<leader>c"  (n and x)
+      file = false,         -- e.g. "<leader>C"  (n)
+    },
+  })
+<
+==============================================================================
+vim:tw=78:ts=8:noet:ft=help:norl:
